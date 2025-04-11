@@ -1,8 +1,9 @@
 import com.microsoft.playwright.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.nio.file.Paths;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class CheckoutProcessTest {
     private static final Logger logger = LoggerFactory.getLogger(CheckoutProcessTest.class);
@@ -32,36 +33,36 @@ public class CheckoutProcessTest {
         page.fill("[data-test='password']", "secret_sauce");
         page.click("[data-test='login-button']");
         page.waitForTimeout(2000);
+        assertTrue(page.url().contains("inventory"), "Login failed or did not navigate to inventory page");
 
         // Add item to the cart
         page.locator(".inventory_item .btn_inventory").first().click();
         page.locator(".shopping_cart_link").click();
         page.waitForTimeout(2000);
+        assertTrue(page.url().contains("cart"), "Cart page not reached after clicking cart icon");
 
         // Proceed to checkout
         page.locator("text=Checkout").click();
+        assertTrue(page.locator("text=Checkout: Your Information").isVisible(), "Checkout Your Information page is not visible");
 
-        // Fill out shipping information (use text-based selectors)
+        // Fill out shipping information
         page.fill("input[name='firstName']", "John");
         page.fill("input[name='lastName']", "Doe");
         page.fill("input[name='postalCode']", "90210");
         page.click("text=Continue");
         page.waitForTimeout(2000);
 
-        logger.info("Shipping information filled out");
-
         // Verify Checkout Overview page
         Locator summaryHeader = page.locator("text=Checkout: Overview");
-        if (!summaryHeader.isVisible()) {
-            logger.error("Failed to reach the Checkout Overview page.");
-        }
-        page.waitForTimeout(2000);
-        page.click("text=Finish");
+        assertTrue(summaryHeader.isVisible(), "Checkout Overview page was not displayed");
 
+        // Finish checkout
+        page.click("text=Finish");
         logger.info("Moving to Checkout Complete page...");
 
         // Verify Checkout Complete page
         Locator backHome = page.locator("text=Back Home");
+        assertTrue(backHome.isVisible(), "Checkout Complete page was not reached");
         if (!backHome.isVisible()) {
             logger.error("Failed to reach the Checkout Complete page.");
         }

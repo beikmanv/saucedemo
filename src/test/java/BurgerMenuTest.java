@@ -2,8 +2,8 @@ import com.microsoft.playwright.*;
 import org.example.pages.LoginPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.nio.file.Paths;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BurgerMenuTest {
     private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
@@ -38,14 +38,17 @@ public class BurgerMenuTest {
 
         // Click on any item to test All Items in Burger Menu
         Locator sauceLabsBackpack = page.locator(".inventory_item >> text=Sauce Labs Backpack");
+        Locator backToProducts = page.locator("#back-to-products");
         sauceLabsBackpack.click();
+        assertTrue(backToProducts.isVisible(), "Back To Products button should be visible and clickable");
 
-        // Burger Menu by ID (Most direct and efficient)
+        // Burger Menu by ID
         Locator burgerMenuButton1 = page.locator("#react-burger-menu-btn");
         burgerMenuButton1.click();
         page.waitForTimeout(2000);
+        assertTrue(page.locator("[data-test='inventory-sidebar-link']").isVisible(), "All Items link should be visible after opening burger menu");
 
-        // Click on All Items by data-test attribute
+        // Click on All Items
         Locator allItemsBurger = page.locator("[data-test='inventory-sidebar-link'] >> text=All Items");
         allItemsBurger.click();
 
@@ -53,8 +56,9 @@ public class BurgerMenuTest {
         Locator burgerMenuButton2 = page.locator("button:has-text('Open Menu')");
         burgerMenuButton2.click();
         page.waitForTimeout(2000);
+        assertTrue(page.locator("[data-test='about-sidebar-link']").isVisible(), "About link should be visible in burger menu");
 
-        // Click on About by data-test attribute
+        // Click on About
         Locator aboutBurger = page.locator("[data-test='about-sidebar-link'] >> text=About");
         aboutBurger.click();
         page.waitForTimeout(2000);
@@ -67,32 +71,32 @@ public class BurgerMenuTest {
         burgerMenuButton3.click();
         page.waitForTimeout(2000);
 
-        // Click on Logout by data-test attribute
+        // Click on Logout
         Locator logoutBurger = page.locator("[data-test='logout-sidebar-link'] >> text=Logout");
         logoutBurger.click();
         page.waitForTimeout(2000);
+        assertTrue(page.url().contains("saucedemo.com"), "Should be redirected to login after logout");
 
-        // Log in second time to the application
+        // Log in again
         page.navigate("https://www.saucedemo.com/");
         page.fill("[data-test='username']", "standard_user");
         page.fill("[data-test='password']", "secret_sauce");
         page.click("[data-test='login-button']");
         page.waitForTimeout(2000);
 
-        // Burger Menu by CSS Selector
+        // Reset App State
         Locator burgerMenuButton4 = page.locator("button#react-burger-menu-btn");
         burgerMenuButton4.click();
         page.waitForTimeout(2000);
-
-        // Click on Reset App State by data-test attribute
         Locator resetBurger = page.locator("[data-test='reset-sidebar-link'] >> text=Reset App State");
         resetBurger.click();
-        page.waitForTimeout(2000);
+        assertTrue(resetBurger.isVisible(), "Reset App State should be visible and clickable");
 
         // Close Burger Menu
         Locator closeMenuButton = page.locator("#react-burger-cross-btn");
         closeMenuButton.click();
         page.waitForTimeout(2000);
+
 
         // Burger Menu by Style or Position (Not Recommended but Possible)
         Locator burgerMenuButton5 = page.locator("button#react-burger-menu-btn:has-text('Open Menu')");
