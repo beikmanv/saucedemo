@@ -1,4 +1,4 @@
-import org.example.BacktraceLogger;
+import org.example.utils.BacktraceLogger;
 import org.junit.jupiter.api.Test;
 
 public class BacktraceLoggerTest {

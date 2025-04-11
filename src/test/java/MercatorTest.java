@@ -1,11 +1,18 @@
 import com.microsoft.playwright.*;
+import org.example.pages.LoginPage;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class SauceDemoTest {
+public class MercatorTest {
+    private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
+
     public static void main(String[] args) {
+        logger.info("Test started");
+
         // Set up Playwright
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
@@ -23,37 +30,16 @@ public class SauceDemoTest {
                 .setSnapshots(true)
         );
 
-        // Set up network interception
-        context.onRequest(request -> {
-            if (request.method().equals("POST")) {
-                // This will print the POST request URL and body
-                System.out.println("POST Request made to: " + request.url());
-
-                String postData = request.postData();
-                System.out.println("POST Request Body: " + postData);
-            }
-        });
-
         // Create a new page
         Page page = context.newPage();
 
-//        // Block specific Backtrace requests
-//        page.route("**/api/unique-events/submit*", route -> route.abort());
-//        page.route("**/api/summed-events/submit*", route -> route.abort());
+        logger.info("Logging in...");
 
-        // Navigate to SauceDemo site
-        page.navigate("https://www.saucedemo.com/");
-
-        page.waitForTimeout(3000); // Wait for 3 seconds
-
-        // Log in with valid credentials
-        page.fill("[data-test='username']", "standard_user");
-        page.fill("[data-test='password']", "secret_sauce");
-        page.waitForTimeout(2000); // Wait for 2 seconds
-        page.click("[data-test='login-button']");
-
-        // Wait for the inventory page to load
-        page.waitForSelector(".inventory_item");
+        // Navigate to Login page
+        LoginPage loginPage = new LoginPage(page);
+        loginPage.navigate();
+        page.waitForTimeout(2000);
+        loginPage.login("standard_user", "secret_sauce");
 
         // Get the list of inventory item prices
         Locator priceLocator = page.locator(".inventory_item_price");
@@ -78,6 +64,8 @@ public class SauceDemoTest {
         // Count the total number of prices
         int totalItems = prices.size();
         System.out.println("Total items: " + totalItems);
+
+        logger.info("Adding highest priced item to the cart...");
 
         // Find the highest price
         if (prices.size() > 0) {
@@ -112,10 +100,6 @@ public class SauceDemoTest {
             System.out.println("$" + price);
         }
 
-        // Take a screenshot of the products page
-        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshots/products_screenshot.png")));
-        System.out.println("Screenshot taken of the products page.");
-
         page.waitForTimeout(1000); // Wait for 1 second
 
         // Stop tracing and save to file
@@ -130,5 +114,7 @@ public class SauceDemoTest {
         System.out.println("Video saved in the 'videos' directory.");
 
         playwright.close();
+
+        logger.info("Test finished successfully");
     }
 }
