@@ -8,7 +8,6 @@ import java.net.URL;
 
 /*
 This test verifies that your app can successfully send a POST request to Backtrace. It proves:
-
         ✔️ You can reach the Backtrace endpoint (no firewall or token issues).
         ✔️ Your JSON is structured correctly (Backtrace accepts it).
         ✔️ The network layer works from your test environment (good for CI/CD validation).
