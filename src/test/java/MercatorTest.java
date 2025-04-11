@@ -1,11 +1,11 @@
 import com.microsoft.playwright.*;
 import org.example.pages.LoginPage;
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MercatorTest {
     private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
@@ -39,6 +39,9 @@ public class MercatorTest {
         page.waitForTimeout(2000);
         loginPage.login("standard_user", "secret_sauce");
 
+        // ✅ ASSERT: Check if we're on the inventory page after login
+        assertTrue(page.url().contains("inventory.html"), "User should land on the inventory page after login");
+
         // Get the list of inventory item prices
         Locator priceLocator = page.locator(".inventory_item_price");
         List<ElementHandle> priceElements = priceLocator.elementHandles();
@@ -51,9 +54,12 @@ public class MercatorTest {
                 double price = Double.parseDouble(priceText);
                 prices.add(price);
             } catch (NumberFormatException e) {
-                System.out.println("Error parsing price: " + priceText);
+                System.out.println("Error parsing price: " + priceText); // ❌ ASSERT failure on parse
             }
         }
+
+        // ✅ ASSERT: Verify that items are present
+        assertFalse(prices.isEmpty(), "There should be at least one item listed");
 
         // Count the total number of prices
         int totalItems = prices.size();
@@ -67,6 +73,7 @@ public class MercatorTest {
             String highestPriceText = String.format("$%.2f", highestPrice);
             Locator inventoryItems = page.locator(".inventory_item");
 
+            boolean itemClicked = false;
             for (int i = 0; i < inventoryItems.count(); i++) {
                 Locator price = inventoryItems.nth(i).locator(".inventory_item_price");
 
@@ -75,9 +82,18 @@ public class MercatorTest {
                     Locator addToCartButton = inventoryItems.nth(i).locator("button:has-text('Add to cart')");
                     addToCartButton.click();
                     System.out.println("Clicked 'Add to cart' for the item with price: " + highestPriceText);
+                    itemClicked = true;
                     break;
                 }
             }
+
+            // ✅ ASSERT: Check if the item was actually clicked
+            assertTrue(itemClicked, "Expected item with the highest price should be added to cart");
+
+            // ✅ ASSERT: Verify that the cart badge is showing 1
+            Locator cartBadge = page.locator(".shopping_cart_badgeRRRRR");
+            assertTrue(cartBadge.isVisible(), "Cart badge should be visible after adding an item");
+            assertEquals("1", cartBadge.textContent(), "Cart should show 1 item");
         }
 
         // Check if all items are correctly processed (by printing the prices)
