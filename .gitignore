@@ -36,3 +36,24 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore trace files
+*.zip
+trace/
+*.trace
+
+# Ignore screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+
+# Ignore videos
+videos/
+*.mp4
+*.webm
+
+# Java build outputs
+target/
+out/
+*.class
