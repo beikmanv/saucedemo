@@ -15,8 +15,15 @@ public class CheckoutProcessTest {
         BrowserContext context = browser.newContext(
                 new Browser.NewContextOptions().setRecordVideoDir(Paths.get("videos")).setRecordVideoSize(1280, 720)
         );
-        Page page = context.newPage();
 
+        // Start tracing
+        System.setProperty("PLAYWRIGHT_JAVA_SRC", "src/test/java");
+        context.tracing().start(new Tracing.StartOptions()
+                .setScreenshots(true)
+                .setSnapshots(true)
+        );
+
+        Page page = context.newPage();
         page.waitForTimeout(2000);
 
         // Log in to the application
@@ -24,13 +31,11 @@ public class CheckoutProcessTest {
         page.fill("[data-test='username']", "standard_user");
         page.fill("[data-test='password']", "secret_sauce");
         page.click("[data-test='login-button']");
-
         page.waitForTimeout(2000);
 
         // Add item to the cart
         page.locator(".inventory_item .btn_inventory").first().click();
         page.locator(".shopping_cart_link").click();
-
         page.waitForTimeout(2000);
 
         // Proceed to checkout
@@ -41,7 +46,6 @@ public class CheckoutProcessTest {
         page.fill("input[name='lastName']", "Doe");
         page.fill("input[name='postalCode']", "90210");
         page.click("text=Continue");
-
         page.waitForTimeout(2000);
 
         logger.info("Shipping information filled out");
@@ -51,9 +55,7 @@ public class CheckoutProcessTest {
         if (!summaryHeader.isVisible()) {
             logger.error("Failed to reach the Checkout Overview page.");
         }
-
         page.waitForTimeout(2000);
-
         page.click("text=Finish");
 
         logger.info("Moving to Checkout Complete page...");
@@ -63,12 +65,16 @@ public class CheckoutProcessTest {
         if (!backHome.isVisible()) {
             logger.error("Failed to reach the Checkout Complete page.");
         }
-
         page.waitForTimeout(2000);
 
+        // Stop tracing and save to file
+        context.tracing().stop(new Tracing.StopOptions()
+                .setPath(Paths.get("trace.zip"))
+        );
+
+        // Close the browser and finish the test
         browser.close();
         playwright.close();
-
         logger.info("Test finished");
     }
 }
