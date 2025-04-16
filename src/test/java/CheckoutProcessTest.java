@@ -10,9 +10,10 @@ public class CheckoutProcessTest {
 
     public static void main(String[] args) {
         logger.info("Test started");
+        logger.debug("This is a debug log - should show if configured correctly");
 
         Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
         BrowserContext context = browser.newContext(
                 new Browser.NewContextOptions().setRecordVideoDir(Paths.get("videos")).setRecordVideoSize(1280, 720)
         );
