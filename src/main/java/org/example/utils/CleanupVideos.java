@@ -10,7 +10,6 @@ public class CleanupVideos {
         Files.walkFileTree(videoDirectory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                // You can delete the video files you don't need (e.g., delete all videos older than 7 days)
                 Files.delete(file);
                 return FileVisitResult.CONTINUE;
             }

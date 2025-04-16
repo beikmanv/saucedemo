@@ -99,7 +99,6 @@ public class BurgerMenuTest extends BeforeAllTests {
         closeMenuButton.click();
         page.waitForTimeout(2000);
 
-
         // Burger Menu by Style or Position (Not Recommended but Possible)
         Locator burgerMenuButton5 = page.locator("button#react-burger-menu-btn:has-text('Open Menu')");
         burgerMenuButton5.click();

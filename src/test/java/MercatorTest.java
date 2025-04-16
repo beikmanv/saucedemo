@@ -17,7 +17,7 @@ public class MercatorTest extends BeforeAllTests {
 
         // Set up Playwright
         Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
         BrowserContext context = browser.newContext(
                 new Browser.NewContextOptions()
                         .setRecordVideoDir(Paths.get("videos"))
@@ -93,7 +93,7 @@ public class MercatorTest extends BeforeAllTests {
             assertTrue(itemClicked, "Expected item with the highest price should be added to cart");
 
             // ✅ ASSERT: Verify that the cart badge is showing 1
-            Locator cartBadge = page.locator(".shopping_cart_badgeRRRRR");
+            Locator cartBadge = page.locator(".shopping_cart_badge");
             assertTrue(cartBadge.isVisible(), "Cart badge should be visible after adding an item");
             assertEquals("1", cartBadge.textContent(), "Cart should show 1 item");
         }
