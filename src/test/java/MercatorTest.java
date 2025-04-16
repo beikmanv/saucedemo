@@ -41,7 +41,7 @@ public class MercatorTest extends BeforeAllTests {
         page.waitForTimeout(2000);
         loginPage.login("standard_user", "secret_sauce");
 
-        // ✅ ASSERT: Check if we're on the inventory page after login
+        // ASSERT: Check if we're on the inventory page after login
         assertTrue(page.url().contains("inventory.html"), "User should land on the inventory page after login");
 
         // Get the list of inventory item prices
@@ -56,11 +56,11 @@ public class MercatorTest extends BeforeAllTests {
                 double price = Double.parseDouble(priceText);
                 prices.add(price);
             } catch (NumberFormatException e) {
-                System.out.println("Error parsing price: " + priceText); // ❌ ASSERT failure on parse
+                System.out.println("Error parsing price: " + priceText); // ASSERT failure on parse
             }
         }
 
-        // ✅ ASSERT: Verify that items are present
+        // ASSERT: Verify that items are present
         assertFalse(prices.isEmpty(), "There should be at least one item listed");
 
         // Count the total number of prices
@@ -89,10 +89,10 @@ public class MercatorTest extends BeforeAllTests {
                 }
             }
 
-            // ✅ ASSERT: Check if the item was actually clicked
+            // ASSERT: Check if the item was actually clicked
             assertTrue(itemClicked, "Expected item with the highest price should be added to cart");
 
-            // ✅ ASSERT: Verify that the cart badge is showing 1
+            // ASSERT: Verify that the cart badge is showing 1
             Locator cartBadge = page.locator(".shopping_cart_badge");
             assertTrue(cartBadge.isVisible(), "Cart badge should be visible after adding an item");
             assertEquals("1", cartBadge.textContent(), "Cart should show 1 item");
