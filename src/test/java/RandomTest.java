@@ -3,16 +3,18 @@ import org.example.pages.LoginPage;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RandomTest {
+public class RandomTest extends BeforeAllTests {
     // This tells SLF4J to create a logger that tags all log messages with the class name RandomTest.
     // It helps you identify which class the log message came from.
     private static final Logger logger = LoggerFactory.getLogger(RandomTest.class);
 
-    public static void main(String[] args) {
+    @Test
+    public void testRandom() {
         logger.info("Test started");
 
         // Set up Playwright

@@ -1,14 +1,16 @@
 import com.microsoft.playwright.*;
 import org.example.pages.LoginPage;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BurgerMenuTest {
+public class BurgerMenuTest extends BeforeAllTests {
     private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
 
-    public static void main(String[] args) {
+    @Test
+    public void testBurgerMenu() {
         logger.info("Test started");
 
         // Set up Playwright

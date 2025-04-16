@@ -1,4 +1,5 @@
 import com.microsoft.playwright.*;
+import org.junit.jupiter.api.Test;
 import org.example.pages.LoginPage;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -7,10 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MercatorTest {
+public class MercatorTest extends BeforeAllTests {
     private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
 
-    public static void main(String[] args) {
+    @Test
+    public void testMercator() {
         logger.info("Test started");
 
         // Set up Playwright
