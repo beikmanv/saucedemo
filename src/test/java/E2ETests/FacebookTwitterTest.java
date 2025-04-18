@@ -1,3 +1,5 @@
+package E2ETests;
+
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.*;
 import org.example.pages.LoginPage;
@@ -9,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FacebookTwitterTest extends BeforeAllTests {
-    private static final Logger logger = LoggerFactory.getLogger(DropdownMenuTest.class);
+public class FacebookTwitterTest extends BeforeAllTestsE2E {
+    private static final Logger logger = LoggerFactory.getLogger(FacebookTwitterTest.class);
 
     @Test
     public void testFacebookTwitter() {
@@ -59,9 +61,10 @@ public class FacebookTwitterTest extends BeforeAllTests {
         // Locate by Role (on Twitter (X) page)
         page.navigate("https://x.com/saucelabs");
         page.waitForLoadState(LoadState.NETWORKIDLE);
-        List<Locator> buttons = page.getByRole(AriaRole.BUTTON).all();
+        List<Locator> buttons = page.getByRole(AriaRole.BUTTON).all(); // Example of user-facing attribute (getByRole)
         System.out.println("Found buttons: " + buttons.size());
-        Locator followButton1 = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Follow @saucelabs"));
+        Locator followButton1 = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Follow @saucelabs")); // getByRole is preferable when you are following accessibility guidelines
+//        Locator followButton1 = page.locator("role=button[name='Follow @saucelabs']"); // Shortened version
         followButton1.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         if (followButton1.isVisible()) {
@@ -82,7 +85,7 @@ public class FacebookTwitterTest extends BeforeAllTests {
         }
 
         // Locate by Text and Index
-        Locator followButtons = page.getByText("Follow");
+        Locator followButtons = page.getByText("Follow"); // Example of user-facing attribute (getByText)
         Locator followButton2 = followButtons.nth(0); // Replace 0 with the appropriate index
         page.locator("div[data-testid='mask']").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         followButton2.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));

@@ -1,8 +1,9 @@
+package E2ETests;
+
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.*;
 import org.example.pages.LoginPage;
 import java.nio.file.Paths;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DropdownMenuTest extends BeforeAllTests {
+public class DropdownMenuTest extends BeforeAllTestsE2E {
     // This tells SLF4J to create a logger that tags all log messages with the class name RandomTest.
     private static final Logger logger = LoggerFactory.getLogger(DropdownMenuTest.class);
 

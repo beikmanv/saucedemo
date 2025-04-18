@@ -1,10 +1,12 @@
+package E2ETests;
+
 import org.example.utils.CleanupVideos;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class BeforeAllTests {
+public class BeforeAllTestsE2E {
 
     @BeforeAll
     public static void globalSetup() {

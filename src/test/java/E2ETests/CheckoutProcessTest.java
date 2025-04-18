@@ -1,3 +1,5 @@
+package E2ETests;
+
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -5,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CheckoutProcessTest extends BeforeAllTests {
+public class CheckoutProcessTest extends BeforeAllTestsE2E {
     private static final Logger logger = LoggerFactory.getLogger(CheckoutProcessTest.class);
 
     @Test
@@ -34,9 +36,9 @@ public class CheckoutProcessTest extends BeforeAllTests {
         page.locator("text=Checkout").click();
         assertTrue(page.locator("text=Checkout: Your Information").isVisible());
 
-        page.fill("input[name='firstName']", "John");
-        page.fill("input[name='lastName']", "Doe");
-        page.fill("input[name='postalCode']", "90210");
+        page.fill("input[name='firstName']", "Valdis");
+        page.fill("input[name='lastName']", "Beikmanis");
+        page.fill("input[name='postalCode']", "CV61DH");
         page.click("text=Continue");
 
         Locator summaryHeader = page.locator("text=Checkout: Overview");

@@ -1,3 +1,5 @@
+package E2ETests;
+
 import com.microsoft.playwright.*;
 import org.example.pages.LoginPage;
 import org.junit.jupiter.api.Test;
@@ -6,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BurgerMenuTest extends BeforeAllTests {
-    private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
+public class BurgerMenuTest extends BeforeAllTestsE2E {
+    private static final Logger logger = LoggerFactory.getLogger(BurgerMenuTest.class);
 
     @Test
     public void testBurgerMenu() {
@@ -99,7 +101,7 @@ public class BurgerMenuTest extends BeforeAllTests {
         closeMenuButton.click();
         page.waitForTimeout(2000);
 
-        // Burger Menu by Style or Position (Not Recommended but Possible)
+        // Burger Menu by Style or Position (not recommended but possible)
         Locator burgerMenuButton5 = page.locator("button#react-burger-menu-btn:has-text('Open Menu')");
         burgerMenuButton5.click();
         page.waitForTimeout(2000);

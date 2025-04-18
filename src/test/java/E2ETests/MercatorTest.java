@@ -1,3 +1,5 @@
+package E2ETests;
+
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.Test;
 import org.example.pages.LoginPage;
@@ -8,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MercatorTest extends BeforeAllTests {
+public class MercatorTest extends BeforeAllTestsE2E {
     private static final Logger logger = LoggerFactory.getLogger(MercatorTest.class);
 
     @Test
