@@ -78,9 +78,8 @@ public class MercatorTest extends BeforeAllTestsE2E {
             Locator inventoryItems = page.locator(".inventory_item");
 
             boolean itemClicked = false;
-            int highestPriceCount = 0; // Variable to count the number of highest-priced items
+            int highestPriceCount = 0;
 
-            // Loop through each inventory item and click 'Add to Cart' for all items with the highest price
             for (int i = 0; i < inventoryItems.count(); i++) {
                 Locator price = inventoryItems.nth(i).locator(".inventory_item_price");
 
@@ -90,7 +89,7 @@ public class MercatorTest extends BeforeAllTestsE2E {
                     addToCartButton.click();
                     System.out.println("Clicked 'Add to cart' for the item with price: " + highestPriceText);
                     itemClicked = true;
-                    highestPriceCount++;  // Increment count for each highest-priced item clicked
+                    highestPriceCount++;
                 }
             }
 
