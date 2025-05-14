@@ -47,8 +47,8 @@ public class MercatorTest extends BeforeAllTestsE2E {
         assertTrue(page.url().contains("inventory.html"), "User should land on the inventory page after login");
 
         // Get the list of inventory item prices
-        Locator priceLocator = page.locator(".inventory_item_price");
-        List<ElementHandle> priceElements = priceLocator.elementHandles();
+        Locator priceLocator = page.locator(".inventory_item_price"); // Finds all elements with the class .inventory_item_price
+        List<ElementHandle> priceElements = priceLocator.elementHandles(); // ElementHandle: Represents a single element that you can interact with (such as clicking, typing, etc.).
         List<Double> prices = new ArrayList<>();
 
         // Extract and store the prices
@@ -78,6 +78,9 @@ public class MercatorTest extends BeforeAllTestsE2E {
             Locator inventoryItems = page.locator(".inventory_item");
 
             boolean itemClicked = false;
+            int highestPriceCount = 0; // Variable to count the number of highest-priced items
+
+            // Loop through each inventory item and click 'Add to Cart' for all items with the highest price
             for (int i = 0; i < inventoryItems.count(); i++) {
                 Locator price = inventoryItems.nth(i).locator(".inventory_item_price");
 
@@ -87,17 +90,19 @@ public class MercatorTest extends BeforeAllTestsE2E {
                     addToCartButton.click();
                     System.out.println("Clicked 'Add to cart' for the item with price: " + highestPriceText);
                     itemClicked = true;
-                    break;
+                    highestPriceCount++;  // Increment count for each highest-priced item clicked
                 }
             }
 
-            // ASSERT: Check if the item was actually clicked
-            assertTrue(itemClicked, "Expected item with the highest price should be added to cart");
+            // ASSERT: Check if any highest-priced item was clicked
+            assertTrue(itemClicked, "Expected item(s) with the highest price should be added to cart");
 
-            // ASSERT: Verify that the cart badge is showing 1
+            // Optionally, you can verify that the cart badge is updated correctly for all added items
             Locator cartBadge = page.locator(".shopping_cart_badge");
-            assertTrue(cartBadge.isVisible(), "Cart badge should be visible after adding an item");
-            assertEquals("1", cartBadge.textContent(), "Cart should show 1 item");
+            assertTrue(cartBadge.isVisible(), "Cart badge should be visible after adding items");
+
+            // ASSERT: Check that the cart shows the correct number of items with the highest price
+            assertEquals(String.valueOf(highestPriceCount), cartBadge.textContent(), "Cart should show the correct number of items");
         }
 
         // Check if all items are correctly processed (by printing the prices)

@@ -15,6 +15,7 @@ This test verifies that your app can successfully send a POST request to Backtra
 
 public class BacktraceLogger {
 
+    // Since it is static, it can be called without creating an instance of the BacktraceLogger class.
     public static void sendEventToBacktrace() {
         try {
             String url = "https://submit.backtrace.io/valmusic/f8b6918b30282a6b49608a51067fab9ddab67d50c7993f22315cda5874cbb408/sourcemap";
